@@ -8,7 +8,13 @@ class User < ActiveRecord::Base
   length: { in: 8..72 },
   on: :create
 
+  validates :name,
+  presence: true,
+  length: { maximum: 19 }
+
   has_secure_password
+
+  has_many :posts
 
   def self.authenticate(params)
     User.find_by_email(params[:email]).try(:authenticate, params[:password])
