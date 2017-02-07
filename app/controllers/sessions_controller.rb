@@ -1,30 +1,33 @@
 class SessionsController < ApplicationController
+  def index
+  end
+
   def new
   end
 
   def create
   user = User.authenticate(user_params)
 
-  if user
-    session[:user_id] = user.id
-    flash[:success] = "User logged in!!"
-    redirect_to root_path
-  else
-    flash[:danger] = "Credentials Invalid!!"
-    redirect_to login_path
+    if user
+      session[:user_id] = user.id
+      flash[:success] = "User logged in!!"
+      redirect_to profiles_path
+    else
+      flash[:danger] = "Credentials Invalid!!"
+      redirect_to login_path
+    end
   end
-end
 
-def destroy
-  session[:user_id] = nil
-  flash[:success] = "User logged out!!"
-  redirect_to root_path
-end
+  def destroy
+    session[:user_id] = nil
+    flash[:success] = "User logged out!!"
+    redirect_to root_path
+  end
 
-private
+  private
 
-def user_params
-  params.require(:user).permit(:email, :password)
-end
+  def user_params
+    params.require(:user).permit(:email, :password)
+  end
 
 end
